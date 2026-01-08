@@ -5,18 +5,20 @@
 </head>
 <body>
 
-<h2>Add User</h2>
+<h2>Add New User</h2>
 <input type="text" id="username" placeholder="Enter name">
 <button id="addUser">Add</button>
+<button id="btn1">Show List</button>
+<hr>
 
-<h2>User List</h2>
-<ul id="userList"></ul>
+<ul id="userList" style="display:none;"></ul>
+<!-- <button id="btn1">Show List</button>
 
-<!-- jQuery -->
+ jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script>
-// LOAD USERS
+// LOAD USERS FUNCTION
 function loadUsers() {
   $.ajax({
     url: "/users",
@@ -30,6 +32,14 @@ function loadUsers() {
   });
 }
 
+// SHOW LIST BUTTON
+$("#btn1").click(function () {
+  loadUsers();          // load data
+ 
+   $("#userList").toggle();
+  // show list
+});
+
 // ADD USER
 $("#addUser").click(function() {
   let name = $("#username").val();
@@ -41,13 +51,10 @@ $("#addUser").click(function() {
     contentType: "application/json",
     success: function() {
       $("#username").val("");
-      loadUsers(); // reload list
+      // do NOT auto show list
     }
   });
 });
-
-// LOAD on page open
-loadUsers();
 </script>
 
 </body>
