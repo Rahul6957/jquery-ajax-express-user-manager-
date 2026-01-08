@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Manager</title>
+</head>
+<body>
+
+<h2>Add User</h2>
+<input type="text" id="username" placeholder="Enter name">
+<button id="addUser">Add</button>
+
+<h2>User List</h2>
+<ul id="userList"></ul>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+// LOAD USERS
+function loadUsers() {
+  $.ajax({
+    url: "/users",
+    type: "GET",
+    success: function(data) {
+      $("#userList").empty();
+      data.forEach(u => {
+        $("#userList").append(`<li>${u.name}</li>`);
+      });
+    }
+  });
+}
+
+// ADD USER
+$("#addUser").click(function() {
+  let name = $("#username").val();
+
+  $.ajax({
+    url: "/users",
+    type: "POST",
+    data: JSON.stringify({ name }),
+    contentType: "application/json",
+    success: function() {
+      $("#username").val("");
+      loadUsers(); // reload list
+    }
+  });
+});
+
+// LOAD on page open
+loadUsers();
+</script>
+
+</body>
+</html>
